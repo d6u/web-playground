@@ -1,0 +1,27 @@
+title: An Enjoyable Playground
+
+html:
+  # Available: ejs, jade, swig
+  # preprocessor: ejs
+
+css:
+  # Available: scss, less
+  # preprocessor: scss
+  #
+  # Available: autoprefixer
+  # vender_prefixing: autoprefixer
+  #
+  # Available: reset, normalize
+  # base: reset
+  #
+  # These stylesheets will be added in appearance order and before the your css
+  # external:
+  #   '//abc.com'
+
+js:
+  # Available: babel, coffeescript
+  # preprocessor: babel
+  #
+  # These scripts will be added in appearance order and before the your js
+  # external:
+  #   '//xyz.com'
