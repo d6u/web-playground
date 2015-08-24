@@ -29,6 +29,7 @@
     "autoprefixer-core": "^5.2.1",
     "babel": "^5.8.21",
     "bluebird": "^2.9.34",
+    "browser-sync": "^2.8.2",
     "commander": "^2.8.1",
     "express": "^4.13.3",
     "jade": "^1.11.0",
