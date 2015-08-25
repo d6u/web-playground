@@ -1,6 +1,6 @@
 {
   "name": "web-playground",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A playground for HTML, JavaScript and CSS.",
   "main": "index.js",
   "bin": {
