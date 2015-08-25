@@ -16,7 +16,7 @@ css:
   #
   # These stylesheets will be added in appearance order and before the your css
   # external:
-  #   '//abc.com'
+  #   - '//abc.com'
 
 js:
   # Available: babel, coffeescript
@@ -24,4 +24,4 @@ js:
   #
   # These scripts will be added in appearance order and before the your js
   # external:
-  #   '//xyz.com'
+  #   - '//xyz.com'
