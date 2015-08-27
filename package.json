@@ -1,7 +1,7 @@
 {
   "name": "web-playground",
   "version": "0.0.2",
-  "description": "A playground for HTML, JavaScript and CSS.",
+  "description": "WebPlayground bootstraps simple HTML, JS, CSS files and setup live-reloading server for you.",
   "main": "index.js",
   "bin": {
     "wpg": "./bin/wpg.js"
