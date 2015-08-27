@@ -1,17 +1,17 @@
 title: An Enjoyable Playground
 
 html:
-  # Available: ejs, jade, swig
+  # Available - ejs, jade, swig
   # preprocessor: ejs
 
 css:
-  # Available: scss, less
+  # Available - scss, less, stylus
   # preprocessor: scss
   #
-  # Available: autoprefixer
+  # Available - autoprefixer
   # vender_prefixing: autoprefixer
   #
-  # Available: reset, normalize
+  # Available - reset, normalize
   # base: reset
   #
   # These stylesheets will be added in appearance order and before the your css
@@ -19,7 +19,7 @@ css:
   #   - '//abc.com'
 
 js:
-  # Available: babel, coffeescript
+  # Available - babel, coffeescript, typescript
   # preprocessor: babel
   #
   # These scripts will be added in appearance order and before the your js
