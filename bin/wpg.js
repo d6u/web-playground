@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 
+'use strict';
+
 var program = require('commander');
-var package = require('../package.json');
+var packageData = require('../package.json');
 
 program
-  .version(package.version)
-  .description(package.description)
+  .version(packageData.version)
+  .description(packageData.description)
   .parse(process.argv);
 
 // Defer requires for better performance on outputing helps
@@ -33,7 +35,6 @@ Bluebird
     require('../index').start();
   })
   .catch(function (err) {
-    console.log(err);
     info('Did not find playground file, scaffold files for you.');
 
     var p1 = copy(path.join(__dirname, '..', 'template', 'playground.yml'), 'playground.yml')
