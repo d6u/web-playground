@@ -31,9 +31,6 @@ function logFileCreation(file) {
 Bluebird
   .resolve(['playground.yml', 'playground.json'])
   .tryInOrder(readFileAsync)
-  .then(function () {
-    require('../index').start();
-  })
   .catch(function (err) {
     info('Did not find playground file, scaffold files for you.');
 
@@ -49,4 +46,7 @@ Bluebird
     Bluebird
       .join(p1, p2, p3, p4)
       .done(_.partial(info, 'Run ' + chalk.green('wpg') + ' to start live-reload server'));
+  })
+  .then(function () {
+    require('../index').start();
   });
