@@ -17,3 +17,14 @@ wpg
 # Run `wpg` again to see your page in browser
 wpg
 ```
+
+Edit html.html, css.css and javascript.js. Your browser will update instantly.
+
+## Preprocessors
+
+Web Playground supports a variety of preprocessors. To enable one, first
+edit playground.yml and uncomment the appropriate section. Then create a new
+file named with the expected file ending for the preprocessor.
+
+For example, to enable CoffeeScript, create javascript.coffee.
+Or for SCSS, create css.scss.
