@@ -31,7 +31,6 @@
     "bluebird": "^2.9.34",
     "browser-sync": "^2.8.2",
     "chalk": "^1.1.1",
-    "coffee-script": "^1.9.3",
     "commander": "^2.8.1",
     "ejs": "^2.3.3",
     "es6-promise": "^3.0.2",
@@ -44,6 +43,7 @@
     "node-sass": "3.2.x",
     "normalize.css": "^3.0.3",
     "postcss": "^5.0.4",
+    "resolve": "^1.1.6",
     "stylus": "^0.52.0",
     "swig": "^1.4.2",
     "typescript": "^1.5.3"
