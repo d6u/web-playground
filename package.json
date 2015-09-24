@@ -44,6 +44,9 @@
     "node-sass": "3.2.x",
     "normalize.css": "^3.0.3",
     "postcss": "^5.0.4",
+    "ramda": "^0.17.1",
+    "resolve": "^1.1.6",
+    "rx": "^3.1.2",
     "stylus": "^0.52.0",
     "swig": "^1.4.2",
     "typescript": "^1.5.3"
