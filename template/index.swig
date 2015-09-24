@@ -18,6 +18,6 @@
     {% for src in scripts %}
       <script src="{{ src }}"></script>
     {% endfor %}
-    <script src="javascript.js"></script>
+    <script src="js.js"></script>
   </body>
 </html>
