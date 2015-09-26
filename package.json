@@ -28,14 +28,11 @@
   "dependencies": {
     "autoprefixer": "^6.0.2",
     "babel": "^5.8.21",
-    "bluebird": "^2.9.34",
     "browser-sync": "^2.8.2",
     "chalk": "^1.1.1",
     "chokidar": "1.1.0",
-    "coffee-script": "^1.9.3",
     "commander": "^2.8.1",
     "ejs": "^2.3.3",
-    "es6-promise": "^3.0.2",
     "express": "^4.13.3",
     "jade": "^1.11.0",
     "js-yaml": "^3.4.0",
@@ -46,9 +43,6 @@
     "postcss": "^5.0.4",
     "ramda": "^0.17.1",
     "resolve": "^1.1.6",
-    "rx": "^3.1.2",
-    "stylus": "^0.52.0",
-    "swig": "^1.4.2",
-    "typescript": "^1.5.3"
+    "rx": "^3.1.2"
   }
 }
