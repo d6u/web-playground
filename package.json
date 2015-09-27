@@ -7,7 +7,9 @@
     "wpg": "./bin/wpg.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint .",
+    "test": "jest",
+    "check": "npm run lint && npm test"
   },
   "repository": {
     "type": "git",
@@ -41,5 +43,11 @@
     "ramda": "^0.17.1",
     "resolve": "^1.1.6",
     "rx": "^4.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^1.5.1",
+    "eslint-plugin-jasmine": "^1.4.0",
+    "jest-cli": "^0.5.8",
+    "sinon": "^1.17.1"
   }
 }
