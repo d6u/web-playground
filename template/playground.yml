@@ -1,27 +1,30 @@
 title: An Enjoyable Playground
 
+#### Uncomment property to enable the feature you want
+
 html:
-  # Available - ejs, jade, swig
+  #### Available - ejs, jade
+  #### To use ejs
   # preprocessor: ejs
 
-css:
-  # Available - scss, less, stylus
-  # preprocessor: scss
-  #
-  # Available - autoprefixer
-  # vender_prefixing: autoprefixer
-  #
-  # Available - reset, normalize
-  # base: reset
-  #
-  # These stylesheets will be added in appearance order and before the your css
-  # external:
-  #   - '//abc.com'
-
 js:
-  # Available - babel, coffeescript, typescript
+  #### Available - babel, coffeescript, typescript
   # preprocessor: babel
-  #
-  # These scripts will be added in appearance order and before the your js
+
+  #### These scripts will be added in appearance order and before the your js
   # external:
-  #   - '//xyz.com'
+  #   - 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js'
+
+css:
+  #### Available - scss, less, stylus
+  # preprocessor: scss
+
+  #### Available - autoprefixer
+  # vender_prefixing: autoprefixer
+
+  #### Available - reset, normalize
+  # base: reset
+
+  #### These stylesheets will be added in appearance order and before the your css
+  # external:
+  #   - 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'

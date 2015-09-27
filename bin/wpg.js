@@ -3,11 +3,11 @@
 'use strict';
 
 var program = require('commander');
-var packageJson = require('../package.json');
+var pkg = require('../package.json');
 
 program
-  .version(packageJson.version)
-  .description(packageJson.description)
+  .version(pkg.version)
+  .description(pkg.description)
   .parse(process.argv);
 
 require('../lib')();

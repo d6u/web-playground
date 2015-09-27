@@ -31,7 +31,7 @@
     "bluebird": "^2.10.1",
     "browser-sync": "^2.9.6",
     "chalk": "^1.1.1",
-    "chokidar": "1.1.0",
+    "chokidar": "^1.1.0",
     "commander": "^2.8.1",
     "ejs": "^2.3.4",
     "express": "^4.13.3",
