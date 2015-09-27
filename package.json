@@ -28,6 +28,7 @@
   "dependencies": {
     "autoprefixer": "^6.0.3",
     "babel": "^5.8.23",
+    "bluebird": "^2.10.1",
     "browser-sync": "^2.9.6",
     "chalk": "^1.1.1",
     "chokidar": "1.1.0",
