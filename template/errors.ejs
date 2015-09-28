@@ -6,11 +6,29 @@
   </head>
   <body>
 
-    <p>
-      <% htmlErr.message.split('\n').forEach(function (line) { %>
-        <%= line %><br>
-      <% }); %>
-    </p>
+    <% if (htmlErr) { %>
+      <p>
+        <% htmlErr.message.split('\n').forEach(function (line) { %>
+          <%= line %><br>
+        <% }); %>
+      </p>
+    <% } %>
+
+    <% if (cssErr) { %>
+      <p>
+        <% cssErr.message.split('\n').forEach(function (line) { %>
+          <%= line %><br>
+        <% }); %>
+      </p>
+    <% } %>
+
+    <% if (jsErr) { %>
+      <p>
+        <% jsErr.message.split('\n').forEach(function (line) { %>
+          <%= line %><br>
+        <% }); %>
+      </p>
+    <% } %>
 
   </body>
 </html>
