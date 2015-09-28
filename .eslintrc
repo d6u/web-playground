@@ -7,7 +7,7 @@
     "worker": false,
     "amd": false,
     "mocha": false,
-    "jasmine": false,
+    "jasmine": true,
     "phantomjs": false,
     "jquery": false,
     "prototypejs": false,
@@ -15,8 +15,12 @@
     "meteor": false,
     "es6": false
   },
-  "globals": {},
-  "plugins": [],
+  "globals": {
+    "jest": false,
+  },
+  "plugins": [
+    "jasmine"
+  ],
   "rules": {
 
     // Possible Errors
@@ -174,5 +178,8 @@
     "space-return-throw-case": 2,
     "space-unary-ops": 2,
     "wrap-regex": 0,
+
+    // Testing
+    "jasmine/missing-expect": 2,
   }
 }

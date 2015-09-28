@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <% if (cssBase) { %>
+      <link rel="stylesheet" href="<%= cssBase %>.css">
+    <% } %>
+    <% stylesheets.forEach(function (href) { %>
+      <link rel="stylesheet" href="<%= href %>">
+    <% }); %>
+    <link rel="stylesheet" href="css.css">
+  </head>
+  <body>
+
+    <%- fragment %>
+
+    <% scripts.forEach(function (src) { %>
+      <script src="<%= src %>"></script>
+    <% }); %>
+    <script src="js.js"></script>
+  </body>
+</html>
