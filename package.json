@@ -38,6 +38,7 @@
     "ejs": "^2.3.4",
     "express": "^4.13.3",
     "js-yaml": "^3.4.2",
+    "node-sass": "^3.3.3",
     "normalize.css": "^3.0.3",
     "postcss": "^5.0.8",
     "ramda": "^0.17.1",
