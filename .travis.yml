@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - '0.10'
+  - '0.12'
+  - '4'
+
+branches:
+  only:
+    - master
+
+before_install:
+  - 'npm config set spin false'
+  - 'npm install -g npm'
+
+script: 'npm run check'
