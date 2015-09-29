@@ -3,14 +3,25 @@
   <head>
     <meta charset="utf-8">
     <title></title>
+    <style>
+      code {
+        font-family: Inconsolata, monospace;
+      }
+    </style>
   </head>
   <body>
 
-    <p>
-      <% htmlErr.message.split('\n').forEach(function (line) { %>
-        <%= line %><br>
-      <% }); %>
-    </p>
+    <% if (htmlErr) { %>
+      <pre><code><%= htmlErr.message %></code></pre>
+    <% } %>
+
+    <% if (cssErr) { %>
+      <pre><code><%= cssErr.message %></code></pre>
+    <% } %>
+
+    <% if (jsErr) { %>
+      <pre><code><%= jsErr.message %></code></pre>
+    <% } %>
 
   </body>
 </html>
