@@ -1,4 +1,5 @@
 [![npm version](https://badge.fury.io/js/web-playground.svg)](http://badge.fury.io/js/web-playground)
+[![Build Status](https://travis-ci.org/d6u/web-playground.svg)](https://travis-ci.org/d6u/web-playground)
 
 # Web Playground
 
