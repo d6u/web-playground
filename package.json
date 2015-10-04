@@ -50,6 +50,6 @@
   "devDependencies": {
     "eslint": "^1.5.1",
     "eslint-plugin-jasmine": "^1.4.0",
-    "jest-cli": "^0.5.8"
+    "jest-cli": "^0.4.19"
   }
 }
