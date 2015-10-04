@@ -65,6 +65,6 @@ To use CoffeeScript:
 
 1. Run `wpg` to create a `playground.yml` if haven't done so.
 2. Add `preprocessor: coffeescript` under `js` in `playground.yml`.
-3. Add `npm install coffee-script` (`-g` is not necessary).
+3. Run `npm install coffee-script` (`-g` is not necessary) to have coffee-script module available in current directory.
 4. Run `wpg` to create `js.coffee`.
 5. Run `wpg` again to start hacking.
