@@ -29,6 +29,9 @@
     "url": "https://github.com/d6u/web-playground/issues"
   },
   "homepage": "https://github.com/d6u/web-playground#readme",
+  "engines": {
+    "node": ">= 2"
+  },
   "dependencies": {
     "autoprefixer": "^6.0.3",
     "babel": "^5.8.23",
@@ -50,6 +53,6 @@
   "devDependencies": {
     "eslint": "^1.5.1",
     "eslint-plugin-jasmine": "^1.4.0",
-    "jest-cli": "^0.4.19"
+    "jest-cli": "^0.5.8"
   }
 }
