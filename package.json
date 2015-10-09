@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/d6u/web-playground#readme",
   "engines": {
-    "node": ">= 2"
+    "node": ">= 4"
   },
   "dependencies": {
     "autoprefixer": "^6.0.3",

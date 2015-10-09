@@ -13,7 +13,7 @@
     "prototypejs": false,
     "shelljs": false,
     "meteor": false,
-    "es6": false
+    "es6": true
   },
   "globals": {
     "jest": false,
