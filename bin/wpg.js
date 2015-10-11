@@ -2,12 +2,15 @@
 
 'use strict';
 
-var program = require('commander');
-var pkg = require('../package.json');
+const program = require('commander');
+const pkg = require('../package.json');
 
 program
   .version(pkg.version)
   .description(pkg.description)
+  .option('-b, --bundle', 'bundle you playground into a single HTML file, which can be uploaded to the Internet')
   .parse(process.argv);
 
-require('../lib')();
+require('../lib')({
+  bundle: program.bundle
+});
