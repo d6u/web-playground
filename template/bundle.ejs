@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title><%= title %></title>
-    <% if (cssBase) { %>
-      <link rel="stylesheet" href="<%= cssBase %>.css">
+    <% if (cssBaseContent) { %>
+      <style><%- cssBaseContent %></style>
     <% } %>
     <% stylesheets.forEach(function (href) { %>
       <link rel="stylesheet" href="<%= href %>">
