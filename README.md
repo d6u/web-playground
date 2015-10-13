@@ -80,9 +80,10 @@ Usage: wpg [options]
 
 Options:
 
-  -h, --help         output usage information
-  -V, --version      output the version number
-  -b, --bundle       bundle you playground into a single HTML file, which can be uploaded to the Internet
-  --no-open-browser  do not auto open a new browser window when start
-  --no-live-reload   disable live reloading (auto refresh browser when file changes)
+  -h, --help                   output usage information
+  -V, --version                output the version number
+  -b, --bundle                 bundle you playground into a single HTML file, which can be uploaded to the Internet
+  -d, --target-dir <dir-name>  target different directory
+  --no-open-browser            do not auto open a new browser window when start
+  --no-live-reload             disable live reloading (auto refresh browser when file changes)
 ```
