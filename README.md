@@ -68,3 +68,21 @@ To use CoffeeScript:
 3. Run `npm install coffee-script` (`-g` is not necessary) to have coffee-script module available in current directory.
 4. Run `wpg` to create `js.coffee`.
 5. Run `wpg` again to start hacking.
+
+## Bundle
+
+You can use `-b` flag when you want to publish your playground. `-b` will bundle all your assets into one `index.html` file, which you can open independently without web-playground.
+
+## Manual
+
+```txt
+Usage: wpg [options]
+
+Options:
+
+  -h, --help         output usage information
+  -V, --version      output the version number
+  -b, --bundle       bundle you playground into a single HTML file, which can be uploaded to the Internet
+  --no-open-browser  do not auto open a new browser window when start
+  --no-live-reload   disable live reloading (auto refresh browser when file changes)
+```
