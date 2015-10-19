@@ -7,8 +7,8 @@
     "wpg": "./bin/wpg.js"
   },
   "scripts": {
-    "lint": "eslint .",
-    "test": "jest",
+    "lint": "eslint ./bin ./lib",
+    "test": "jest --coverage",
     "check": "npm run lint && npm test",
     "preversion": "npm run check",
     "postversion": "git push && git push --tags"
