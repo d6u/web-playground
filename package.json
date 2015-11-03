@@ -56,6 +56,6 @@
     "codecov.io": "^0.1.6",
     "eslint": "^1.5.1",
     "eslint-plugin-jasmine": "^1.4.0",
-    "jest-cli": "^0.5.8"
+    "jest-cli": "^0.7.0"
   }
 }
