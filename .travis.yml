@@ -10,4 +10,4 @@ before_install:
   - 'npm config set spin false'
   - 'npm install -g npm@2'
 
-script: 'npm run check'
+script: 'npm run coverage'

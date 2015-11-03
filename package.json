@@ -10,6 +10,7 @@
     "lint": "eslint ./bin ./lib",
     "test": "jest --coverage",
     "check": "npm run lint && npm test",
+    "coverage": "npm run check && cat ./coverage/coverage-final.json | ./node_modules/codecov.io/bin/codecov.io.js",
     "preversion": "npm run check",
     "postversion": "git push && git push --tags"
   },
@@ -52,6 +53,7 @@
     "rx": "^4.0.0"
   },
   "devDependencies": {
+    "codecov.io": "^0.1.6",
     "eslint": "^1.5.1",
     "eslint-plugin-jasmine": "^1.4.0",
     "jest-cli": "^0.5.8"
