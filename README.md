@@ -8,6 +8,8 @@ WebPlayground is like CodePen but for your localhost. It scaffolds just one HTML
 
 ## Give it a try by:
 
+**Only compatible with Node 4 or above**
+
 ```sh
 npm install -g web-playground
 
