@@ -1,6 +1,6 @@
 {
   "name": "web-playground",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "WebPlayground bootstraps simple HTML, JS, CSS files and setup live-reloading server for you.",
   "main": "lib/index.js",
   "bin": {
