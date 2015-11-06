@@ -1,5 +1,6 @@
 [![npm version](https://badge.fury.io/js/web-playground.svg)](http://badge.fury.io/js/web-playground)
 [![Build Status](https://travis-ci.org/d6u/web-playground.svg)](https://travis-ci.org/d6u/web-playground)
+[![codecov.io](https://codecov.io/github/d6u/web-playground/coverage.svg?branch=master)](https://codecov.io/github/d6u/web-playground?branch=master)
 
 # Web Playground
 
