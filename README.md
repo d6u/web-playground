@@ -10,6 +10,8 @@ Web Playground is command line tool for quick prototyping, demo, tutorial or pre
 
 ## Give it a try by:
 
+**Only compatible with Node 4 or above**
+
 ```sh
 # Install
 npm install -g web-playground
