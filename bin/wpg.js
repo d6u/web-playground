@@ -14,9 +14,7 @@ program
   .option('--no-live-reload', 'disable live reloading (auto refresh browser when file changes)')
   .parse(process.argv);
 
-require('../lib')({
-  bundle: program.bundle,
-  targetDir: program.targetDir,
-  openBrowser: program.openBrowser,
-  liveReload: program.liveReload,
-});
+const R = require('ramda');
+const pickOpts = R.pick(['bundle', 'targetDir', 'openBrowser', 'liveReload']);
+
+require('../lib')(pickOpts(program));
