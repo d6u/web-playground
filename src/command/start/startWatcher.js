@@ -1,7 +1,7 @@
 import {join} from 'path';
 import {Observable} from 'rx';
 import {wrap} from 'co';
-import {curry, converge, prop, path, pipe} from 'ramda';
+import {curry, converge, prop, path, pipe, defaultTo} from 'ramda';
 import {
   loadConfig,
   getJsGlobPattern,
@@ -72,9 +72,9 @@ export default wrap(function *({targetDir = process.cwd(), liveReload}, serveAss
     info('cannot found config file, use default configurations');
     const config = {
       title: 'An Enjoyable Playground',
-      stylesheets: [],
-      scripts: [],
-      cssBase: null,
+      html: null,
+      css: null,
+      js: null
     };
     info(JSON.stringify(config, null, 4));
     configStream = Observable.just(config);
