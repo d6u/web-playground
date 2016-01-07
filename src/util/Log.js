@@ -1,0 +1,17 @@
+import chalk from 'chalk';
+
+const PREFIX = `[${chalk.green('playground')}]`;
+const ERR_PREFIX = `[${chalk.red('error')}]`;
+
+export function info(msg) {
+  for (const line of msg.split('\n')) {
+    console.log(`${PREFIX} ${line}`);
+  }
+}
+
+export function error(msg) {
+  let str = msg instanceof Error ? msg.stack : msg;
+  for (const line of str.split('\n')) {
+    console.log(`${ERR_PREFIX} ${line}`);
+  }
+}

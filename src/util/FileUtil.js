@@ -2,6 +2,8 @@ import co, {wrap} from 'co';
 import {access, readFile, writeFile} from 'mz/fs';
 import {join, basename} from 'path';
 import {R_OK} from 'fs';
+import chokidar from 'chokidar';
+import {Observable} from 'rx';
 
 const CONFIG_FILES = ['playground.yml', 'playground.yaml', 'playground.json'];
 
@@ -33,3 +35,18 @@ export const copyTmpl = wrap(function *(destPath) {
   }
   yield writeFile(destPath, fcontent);
 });
+
+export const watch = (pattern) => Observable.create((observer) => {
+  const watcher = chokidar.watch(pattern, {
+    ignored: /[\/\\]\./, // Don't care dotfiles
+    persistent: true,
+  });
+
+  watcher.on('all', (event, file) => observer.onNext(file));
+
+  return () => watcher.close();
+});
+
+export function readFileToStr(fpath) {
+  return readFile(fpath, 'utf8');
+}
