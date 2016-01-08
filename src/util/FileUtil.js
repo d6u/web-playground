@@ -50,3 +50,7 @@ export const watch = (pattern) => Observable.create((observer) => {
 export function readFileToStr(fpath) {
   return readFile(fpath, 'utf8');
 }
+
+export function writeStrToFile(fpath, fcontent) {
+  return writeFile(fpath, fcontent, 'utf8');
+}

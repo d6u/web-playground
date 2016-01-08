@@ -50,9 +50,7 @@
     "babel-core": "^6.3.26",
     "babel-preset-es2015-node4": "^2.0.2",
     "codecov.io": "^0.1.6",
-    "eslint": "^1.10.3",
-    "eslint-plugin-jasmine": "^1.6.0",
-    "jest-cli": "^0.8.2"
+    "eslint": "^1.10.3"
   },
   "scripts": {
     "lint": "eslint ./bin ./lib",

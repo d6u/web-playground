@@ -6,18 +6,22 @@
     <% if (cssBaseContent) { %>
       <style><%- cssBaseContent %></style>
     <% } %>
-    <% stylesheets.forEach(function (href) { %>
-      <link rel="stylesheet" href="<%= href %>">
-    <% }); %>
+    <% if (stylesheets) { %>
+      <% stylesheets.forEach(function (href) { %>
+        <link rel="stylesheet" href="<%= href %>">
+      <% }); %>
+    <% } %>
     <style><%- css %></style>
   </head>
   <body>
 
     <%- html %>
 
-    <% scripts.forEach(function (src) { %>
-      <script src="<%= src %>"></script>
-    <% }); %>
+    <% if (scripts) { %>
+      <% scripts.forEach(function (src) { %>
+        <script src="<%= src %>"></script>
+      <% }); %>
+    <% } %>
     <script><%- js %></script>
   </body>
 </html>

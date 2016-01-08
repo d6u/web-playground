@@ -6,13 +6,9 @@ import pkg from '../../package.json';
 import init from '../command/init';
 import start from '../command/start';
 import {error} from '../util/Log';
-// import bundle from '../command/bundle';
+import bundle from '../command/bundle';
 
 const pickOpts = pick(['targetDir', 'openBrowser', 'liveReload']);
-
-function logStack(err) {
-  console.error(err.stack);
-}
 
 program
   .version(pkg.version)
@@ -30,9 +26,9 @@ program
   .option('--no-live-reload', 'disable live reloading (auto refresh browser when file changes)')
   .action((cmd) => start(merge(pickOpts(program), pickOpts(cmd))).catch(error));
 
-// program
-//   .command('bundle')
-//   .description('bundle all asserts into a single HTML file')
-//   .action(() => bundle(pickOpts(program)).catch(logStack));
+program
+  .command('bundle')
+  .description('bundle all asserts into a single HTML file')
+  .action(() => bundle(pickOpts(program)).catch(error));
 
 program.parse(process.argv);
