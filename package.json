@@ -2,30 +2,18 @@
   "name": "web-playground",
   "version": "0.4.0",
   "description": "WebPlayground bootstraps simple HTML, JS, CSS files and setup live-reloading server for you.",
-  "main": "lib/index.js",
-  "bin": {
-    "wpg": "./bin/wpg.js"
-  },
-  "scripts": {
-    "lint": "eslint ./bin ./lib",
-    "test": "jest --coverage",
-    "check": "npm run lint && npm test",
-    "coverage": "npm run check && cat ./coverage/coverage-final.json | ./node_modules/codecov.io/bin/codecov.io.js",
-    "preversion": "npm run check",
-    "postversion": "git push && git push --tags"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/d6u/web-playground.git"
-  },
+  "author": "Daiwei Lu <daiweilu123@gmail.com> (http://daiwei.lu)",
+  "license": "MIT",
   "keywords": [
     "HTML",
     "JavaScript",
     "CSS",
     "playground"
   ],
-  "author": "Daiwei Lu <daiweilu123@gmail.com> (http://daiwei.lu)",
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d6u/web-playground.git"
+  },
   "bugs": {
     "url": "https://github.com/d6u/web-playground/issues"
   },
@@ -33,30 +21,46 @@
   "engines": {
     "node": ">= 4"
   },
+  "main": "./lib/index.js",
+  "bin": {
+    "wpg": "./lib/bin/wpg.js"
+  },
   "dependencies": {
-    "autoprefixer": "^6.0.3",
-    "babel": "^5.8.23",
-    "bluebird": "^3.0.0",
-    "browser-sync": "^2.9.6",
+    "autoprefixer": "^6.2.3",
+    "bluebird": "^3.1.1",
+    "browser-sync": "^2.10.1",
     "chalk": "^1.1.1",
-    "chokidar": "^1.1.0",
+    "chokidar": "^1.4.2",
     "co": "^4.6.0",
-    "commander": "^2.8.1",
+    "commander": "^2.9.0",
     "ejs": "^2.3.4",
-    "express": "^4.13.3",
-    "js-yaml": "^3.4.2",
-    "node-sass": "^3.3.3",
-    "normalize.css": "^3.0.3",
+    "js-yaml": "^3.4.6",
+    "koa": "^1.1.2",
+    "mz": "^2.1.0",
+    "node-sass": "^3.4.2",
     "portscanner": "^1.0.0",
-    "postcss": "^5.0.8",
-    "ramda": "~0.18.0",
+    "postcss": "^5.0.13",
+    "ramda": "~0.19.0",
     "resolve": "^1.1.6",
-    "rx": "^4.0.0"
+    "rx": "^4.0.7"
   },
   "devDependencies": {
+    "babel-cli": "^6.3.17",
+    "babel-core": "^6.3.26",
+    "babel-preset-es2015-node4": "^2.0.2",
     "codecov.io": "^0.1.6",
-    "eslint": "^1.10.2",
-    "eslint-plugin-jasmine": "^1.4.0",
-    "jest-cli": "^0.7.0"
+    "eslint": "^1.10.3"
+  },
+  "scripts": {
+    "lint": "eslint ./bin ./lib",
+    "test": "jest --coverage",
+    "check": "npm run lint && npm test",
+    "coverage": "npm run check && cat ./coverage/coverage-final.json | ./node_modules/codecov.io/bin/codecov.io.js",
+    "clean": "rimraf lib",
+    "build:lib": "babel src --out-dir lib",
+    "build": "npm run clean && npm run build:lib",
+    "watch": "babel src --out-dir lib --watch",
+    "preversion": "npm run check",
+    "postversion": "git push && git push --tags"
   }
 }

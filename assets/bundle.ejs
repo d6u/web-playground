@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <% if (cssBaseContent) { %>
+      <style><%- cssBaseContent %></style>
+    <% } %>
+    <% if (stylesheets) { %>
+      <% stylesheets.forEach(function (href) { %>
+        <link rel="stylesheet" href="<%= href %>">
+      <% }); %>
+    <% } %>
+    <style><%- css %></style>
+  </head>
+  <body>
+
+    <%- html %>
+
+    <% if (scripts) { %>
+      <% scripts.forEach(function (src) { %>
+        <script src="<%= src %>"></script>
+      <% }); %>
+    <% } %>
+    <script><%- js %></script>
+  </body>
+</html>
