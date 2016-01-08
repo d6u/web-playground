@@ -1,25 +1,44 @@
-import co, {wrap} from 'co';
+import { basename, relative, dirname, join } from 'path';
+import { wrap } from 'co';
+import { green } from 'chalk';
+import { writeStrTo, readAsset } from '../../util/FileUtil';
 import {
   getConfigPath,
   getDefaultConfigPath,
-  copyTmpl
-} from '../../util/FileUtil';
+  loadConfig
+} from '../../util/ConfigUtil';
 import {
-  loadConfig,
   getJsFilePath,
   getCssFilePath,
   getHtmlFilePath,
   getDefaultJsFilePath,
   getDefaultCssFilePath,
   getDefaultHtmlFilePath
-} from '../../util/PlaygroundUtil';
+} from '../../util/AssetUtil';
+import { info } from '../../util/Log';
+
+const copyTmpl = wrap(function *(fdest) {
+  const cwd = process.cwd();
+  const fname = basename(fdest);
+  const rpath = `${dirname(relative(cwd, fdest))}/`;
+
+  info(`found no ${green(fname)} in ${green(rpath)}`);
+
+  const fcontent = yield readAsset(fname);
+  yield writeStrTo(fdest, fcontent || '');
+
+  info(`${green(join(rpath, fname))} created`);
+});
 
 export default wrap(function *({targetDir = process.cwd()}) {
+
   let fpath = yield getConfigPath(targetDir);
+
   if (!fpath) {
     fpath = getDefaultConfigPath(targetDir);
     yield copyTmpl(fpath);
   }
+
   const config = yield loadConfig(fpath);
 
   let [jsFpath, cssFpath, htmlFpath] = yield [

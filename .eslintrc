@@ -3,13 +3,7 @@ env:
   es6: true
 
 ecmaFeatures:
-  destructuring: false
-  defaultParams: false
-  restParams: false
-  modules: false
-  regexUFlag: false
-  regexYFlag: false
-  spread: false
+  modules: true
 
 rules:
   # Possible Errors

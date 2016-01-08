@@ -1,40 +1,23 @@
-import co, {wrap} from 'co';
-import {access, readFile, writeFile} from 'mz/fs';
-import {join, basename} from 'path';
-import {R_OK} from 'fs';
+import { join } from 'path';
+import { R_OK } from 'fs';
+import { wrap } from 'co';
+import { access, readFile, writeFile } from 'mz/fs';
 import chokidar from 'chokidar';
-import {Observable} from 'rx';
+import { Observable } from 'rx';
 
-const CONFIG_FILES = ['playground.yml', 'playground.yaml', 'playground.json'];
+export const joinTwo = (...parts) => (part) => join.apply(null, parts.concat([part]));
 
-export function getDefaultConfigPath(dir) {
-  return join(dir, CONFIG_FILES[0]);
+export function getAssetPath(name) {
+  return join(__dirname, '..', '..', 'assets', name);
 }
 
-export const getConfigPath = wrap(function *(dir) {
-  for (const file of CONFIG_FILES) {
-    const fpath = join(dir, file);
-    try {
-      yield access(fpath, R_OK)
-    } catch (err) {
-      continue;
-    }
-    return fpath;
-  }
-  return null;
-});
+export function readToStr(fpath) {
+  return readFile(fpath, 'utf8');
+}
 
-export const copyTmpl = wrap(function *(destPath) {
-  const fname = basename(destPath);
-  const fpath = join(__dirname, '..', '..', 'template', fname);
-  let fcontent;
-  try {
-    fcontent = yield readFile(fpath);
-  } catch (err) {
-    fcontent = new Buffer('', 'utf8');
-  }
-  yield writeFile(destPath, fcontent);
-});
+export function writeStrTo(fpath, fcontent) {
+  return writeFile(fpath, fcontent, 'utf8');
+}
 
 export const watch = (pattern) => Observable.create((observer) => {
   const watcher = chokidar.watch(pattern, {
@@ -47,10 +30,12 @@ export const watch = (pattern) => Observable.create((observer) => {
   return () => watcher.close();
 });
 
-export function readFileToStr(fpath) {
-  return readFile(fpath, 'utf8');
-}
-
-export function writeStrToFile(fpath, fcontent) {
-  return writeFile(fpath, fcontent, 'utf8');
-}
+export const readAsset = wrap(function *(name) {
+  const fpath = getAssetPath(name);
+  try {
+    yield access(fpath, R_OK);
+    return yield readToStr(fpath);
+  } catch (err) {
+    return null;
+  }
+});

@@ -12,7 +12,7 @@ const pickOpts = pick(['targetDir', 'openBrowser', 'liveReload']);
 
 program
   .version(pkg.version)
-  .option('-d, --target-dir <dir-name>', 'target different directory')
+  .option('-d, --target-dir <dir-name>', 'target different directory');
 
 program
   .command('init')

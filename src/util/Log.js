@@ -1,3 +1,5 @@
+/*eslint no-console:0*/
+
 import chalk from 'chalk';
 
 const PREFIX = `[${chalk.green('playground')}]`;
@@ -10,7 +12,7 @@ export function info(msg) {
 }
 
 export function error(msg) {
-  let str = msg instanceof Error ? msg.stack : msg;
+  const str = msg instanceof Error ? msg.stack : msg;
   for (const line of str.split('\n')) {
     console.log(`${ERR_PREFIX} ${line}`);
   }
