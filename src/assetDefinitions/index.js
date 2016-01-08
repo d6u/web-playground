@@ -1,5 +1,14 @@
 import Bluebird from 'bluebird';
 import R from 'ramda';
+import ejsRender from './ejs';
+import jadeRender from './jade';
+import scssRender from './scss';
+import lessRender from './less';
+import stylusRender from './stylus';
+import autoprefixerRender from './autoprefixer';
+import babelRender from './babel';
+import coffeescriptRender from './coffeescript';
+import typescriptRender from './typescript';
 
 const identityAsync = Bluebird.method(R.identity);
 
@@ -11,11 +20,11 @@ export const html = {
     },
     ejs: {
       extensions: ['ejs'],
-      render: require('./ejs'),
+      render: ejsRender,
     },
     jade: {
       extensions: ['jade'],
-      render: require('./jade'),
+      render: jadeRender,
     },
   }
 };
@@ -28,15 +37,15 @@ export const css = {
     },
     scss: {
       extensions: ['scss'],
-      render: require('./scss'),
+      render: scssRender,
     },
     less: {
       extensions: ['less'],
-      render: require('./less'),
+      render: lessRender,
     },
     stylus: {
       extensions: ['stylus'],
-      render: require('./stylus'),
+      render: stylusRender,
     },
   },
 
@@ -45,7 +54,7 @@ export const css = {
       render: identityAsync,
     },
     autoprefixer: {
-      render: require('./autoprefixer'),
+      render: autoprefixerRender,
     },
   }
 };
@@ -58,15 +67,15 @@ export const js = {
     },
     babel: {
       extensions: ['js', 'es6', 'es', 'jsx'],
-      render: require('./babel'),
+      render: babelRender,
     },
     coffeescript: {
       extensions: ['coffee'],
-      render: require('./coffeescript'),
+      render: coffeescriptRender,
     },
     typescript: {
       extensions: ['ts'],
-      render: require('./typescript'),
+      render: typescriptRender,
     },
   }
 };

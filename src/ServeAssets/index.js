@@ -1,6 +1,6 @@
 import assert from 'assert';
 import { curry, contains } from 'ramda';
-import { RenderError } from '../error';
+import { RenderError } from '../Error';
 import getCss from './getCss';
 import getCssNormalize from './getCssNormalize';
 import getCssReset from './getCssReset';

@@ -43,7 +43,7 @@ export const getDefaultHtmlFilePath = getDefaultPathForAsset('html');
 
 const getGlobPatternForAsset = curry(function (type, dir, config) {
   const extPattern = extensionsForAsset(type, config).join(',');
-  return join(dir, `${type}.${extPattern}`);
+  return join(dir, `${type}.{${extPattern}}`);
 });
 
 export const getJsGlobPattern = getGlobPatternForAsset('js');

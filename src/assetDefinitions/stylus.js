@@ -1,6 +1,6 @@
 const Bluebird = require('bluebird');
 const resolveModule = require('../util/ModuleUtil').resolveModule;
-const RenderError = require('../ServeAssets').RenderError;
+import { RenderError } from '../Error';
 
 module.exports = function renderStylus(str) {
   return resolveModule('stylus')

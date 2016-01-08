@@ -1,13 +1,23 @@
-const resolveModule = require('../util/ModuleUtil').resolveModule;
-const RenderError = require('../ServeAssets').RenderError;
-const chalk = require('chalk');
+import { wrap } from 'co';
+import { stripColor } from 'chalk';
+import { RenderError } from '../Error';
+import { resolveModule } from '../util/ModuleUtil';
 
-module.exports = function renderBabel(str) {
-  return resolveModule('babel')
-    .then(function (babel) {
-      return babel.transform(str).code;
-    })
-    .catch(function (err) {
-      return new RenderError(err.message + '\n' + chalk.stripColor(err.codeFrame));
-    });
-};
+export default wrap(function *(str) {
+  try {
+    const [babel, presets] = yield [
+      resolveModule('babel-core'),
+      [
+        resolveModule('babel-preset-es2015'),
+        resolveModule('babel-preset-react'),
+        resolveModule('babel-preset-stage-0')
+      ]
+    ];
+
+    const { code } = babel.transform(str, { presets });
+
+    return code;
+  } catch (err) {
+    return new RenderError(err.message + '\n' + stripColor(err.codeFrame));
+  }
+});

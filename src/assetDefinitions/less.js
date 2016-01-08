@@ -1,7 +1,7 @@
 const Bluebird = require('bluebird');
 const R = require('ramda');
 const resolveModule = require('../util/ModuleUtil').resolveModule;
-const RenderError = require('../ServeAssets').RenderError;
+import { RenderError } from '../Error';
 
 module.exports = function renderLess(str) {
   return resolveModule('less')
