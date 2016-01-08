@@ -25,6 +25,12 @@
   "bin": {
     "wpg": "./lib/bin/wpg.js"
   },
+  "files": [
+    "lib",
+    "src",
+    "assets",
+    ".babelrc"
+  ],
   "dependencies": {
     "autoprefixer": "^6.2.3",
     "bluebird": "^3.1.1",
