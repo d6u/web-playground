@@ -1,7 +1,6 @@
 import assert from 'assert';
-import {Router as createRouter} from 'express';
-import {curry, contains} from 'ramda';
-import {RenderError} from '../error';
+import { curry, contains } from 'ramda';
+import { RenderError } from '../error';
 import getCss from './getCss';
 import getCssNormalize from './getCssNormalize';
 import getCssReset from './getCssReset';
@@ -43,12 +42,30 @@ export default class ServeAssets {
       }
     });
 
-    this.router = createRouter();
+    this.router = () => {
+      const self = this;
 
-    this.router.get('/', getRoot.bind(this));
-    this.router.get('/js.js', getJs.bind(this));
-    this.router.get('/css.css', getCss.bind(this));
-    this.router.get('/reset.css', getCssReset.bind(this));
-    this.router.get('/normalize.css', getCssNormalize.bind(this));
+      return function *(next) {
+        switch (this.url) {
+        case '/':
+          yield getRoot.call(this, next, self);
+          break;
+        case '/js.js':
+          yield getJs.call(this, next, self);
+          break;
+        case '/css.css':
+          yield getCss.call(this, next, self);
+          break;
+        case '/reset.css':
+          yield getCssReset.call(this, next, self);
+          break;
+        case '/normalize.css':
+          yield getCssNormalize.call(this, next, self);
+          break;
+        default:
+          this.status = 404;
+        }
+      };
+    };
   }
 }

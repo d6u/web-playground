@@ -1,4 +1,4 @@
-/*eslint no-console:0*/
+/*eslint no-console:0 no-process:0*/
 
 import chalk from 'chalk';
 
@@ -16,4 +16,5 @@ export function error(msg) {
   for (const line of str.split('\n')) {
     console.log(`${ERR_PREFIX} ${line}`);
   }
+  process.exit(1);
 }

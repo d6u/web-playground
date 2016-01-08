@@ -17,6 +17,11 @@ import {
 } from '../../util/AssetUtil';
 import { info } from '../../util/Log';
 
+/**
+ * @param {string} fdest
+ *
+ * @return {Promise -> void}
+ */
 const copyTmpl = wrap(function *(fdest) {
   const cwd = process.cwd();
   const fname = basename(fdest);
@@ -30,7 +35,13 @@ const copyTmpl = wrap(function *(fdest) {
   info(`${green(join(rpath, fname))} created`);
 });
 
-export default wrap(function *({targetDir = process.cwd()}) {
+/**
+ * @param {Object} opts
+ * @param {string} opts.targetDir
+ *
+ * @return {Promise -> void}
+ */
+export default wrap(function *({targetDir}) {
 
   let fpath = yield getConfigPath(targetDir);
 

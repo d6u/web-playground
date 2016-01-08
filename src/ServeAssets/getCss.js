@@ -1,4 +1,6 @@
-export default function (req, res) {
-  res.set('Content-Type', 'text/css; charset=UTF-8');
-  res.send(this.assets['css']);
+/*eslint require-yield:0*/
+
+export default function *(next, serveAssets) {
+  this.set('Content-Type', 'text/css; charset=UTF-8');
+  this.body = serveAssets.assets['css'];
 }

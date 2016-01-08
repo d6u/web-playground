@@ -1,9 +1,6 @@
-import {join} from 'path';
-import {wrap} from 'co';
-import {readFile} from 'mz/fs';
+import { readAsset } from '../util/FileUtil';
 
-export default wrap(function *(req, res) {
-  res.set('Content-Type', 'text/css; charset=UTF-8');
-  const fcontent = yield readFile(join(__dirname, '..', 'static', 'reset.css'));
-  res.send(fcontent);
-});
+export default function *(next, serveAssets) {
+  this.set('Content-Type', 'text/css; charset=UTF-8');
+  this.body = yield readAsset('reset.css');
+}

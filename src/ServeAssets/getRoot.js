@@ -1,25 +1,23 @@
-import {join} from 'path';
-import {wrap} from 'co';
-import {render} from 'ejs';
-import {merge} from 'ramda';
-import {readFileToStr} from '../util/FileUtil';
+import { render } from 'ejs';
+import { merge } from 'ramda';
+import { readAsset } from '../util/FileUtil';
 
-const R = require('ramda');
+export default function *(next, serveAssets) {
 
-export default wrap(function *(req, res) {
-  let html;
+  const hasError = serveAssets.assets['htmlErr'] ||
+    serveAssets.assets['jsErr'] ||
+    serveAssets.assets['cssErr'];
 
-  if (this.assets['htmlErr'] || this.assets['jsErr'] || this.assets['cssErr']) {
-    const tmpl = yield readFileToStr(join(__dirname, '..', '..', 'template', 'errors.ejs'));
-    html = ejs.render(tmpl, {
-      htmlErr: this.assets['htmlErr'],
-      cssErr: this.assets['cssErr'],
-      jsErr: this.assets['jsErr'],
+  if (hasError) {
+    const tmpl = yield readAsset('errors.ejs');
+    this.body = render(tmpl, {
+      htmlErr: serveAssets.assets['htmlErr'],
+      cssErr: serveAssets.assets['cssErr'],
+      jsErr: serveAssets.assets['jsErr'],
     });
   } else {
-    const tmpl = yield readFileToStr(join(__dirname, '..', '..', 'template', 'index.ejs'));
-    html = render(tmpl, merge({fragment: this.assets['html']}, this.locals));
+    const tmpl = yield readAsset('index.ejs');
+    const locals = merge({fragment: serveAssets.assets['html']}, serveAssets.locals);
+    this.body = render(tmpl, locals);
   }
-
-  res.send(html);
-});
+}

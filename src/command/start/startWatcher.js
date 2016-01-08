@@ -1,9 +1,8 @@
-import {join} from 'path';
-import {Observable} from 'rx';
-import {wrap} from 'co';
-import {curry, converge, prop, path, pipe, defaultTo} from 'ramda';
+import { Observable } from 'rx';
+import { wrap } from 'co';
+import { curry, converge, prop, path, pipe } from 'ramda';
+import { getConfigPath, loadConfig } from '../../util/ConfigUtil';
 import {
-  loadConfig,
   getJsGlobPattern,
   getCssGlobPattern,
   getHtmlGlobPattern,
@@ -11,9 +10,9 @@ import {
   getCssRender,
   getHtmlRender,
   getPostProcessorForCss
-} from '../../util/PlaygroundUtil';
-import {getConfigPath, watch, readFileToStr} from '../../util/FileUtil';
-import {info} from '../../util/Log';
+} from '../../util/AssetUtil';
+import { watch, readToStr } from '../../util/FileUtil';
+import { info, error } from '../../util/Log';
 
 const getLocalsFromPlayground = converge(
   (title, cssBase, stylesheets, scripts) => ({title, cssBase, stylesheets, scripts}),
@@ -34,21 +33,21 @@ const setLocals = curry(function (serveAssets, config) {
 
 function processHtmlFile({targetDir}, serveAssets, config) {
   return watch(getHtmlGlobPattern(targetDir, config))
-    .flatMap(readFileToStr)
+    .flatMap(readToStr)
     .flatMap(getHtmlRender(config))
     .doOnNext(serveAssets.updateAsset('html'));
 }
 
 function processJsFile({targetDir}, serveAssets, config) {
   return watch(getJsGlobPattern(targetDir, config))
-    .flatMap(readFileToStr)
+    .flatMap(readToStr)
     .flatMap(getJsRender(config))
     .doOnNext(serveAssets.updateAsset('js'));
 }
 
 function processCssFile({targetDir}, serveAssets, config) {
   return watch(getCssGlobPattern(targetDir, config))
-    .flatMap(readFileToStr)
+    .flatMap(readToStr)
     .flatMap(getCssRender(config))
     .flatMap(getPostProcessorForCss(config))
     .doOnNext(serveAssets.updateAsset('css'));
@@ -62,20 +61,31 @@ const processAssetFiles = curry(function (opts, serveAssets, config) {
   );
 });
 
-export default wrap(function *({targetDir = process.cwd(), liveReload}, serveAssets, bs) {
+const DEFAULT_CONFIG = {
+  title: 'Cat Playground',
+  html: null,
+  css: null,
+  js: null
+};
+
+/**
+ * @param {Object}      opts
+ * @param {string}      opts.targetDir
+ * @param {boolean}     opts.liveReload
+ * @param {ServeAssets} serveAssets
+ * @param {BrowserSync} bs
+ *
+ * @return {void}
+ */
+export default wrap(function *({targetDir, liveReload}, serveAssets, bs) {
 
   const configPath = yield getConfigPath(targetDir);
 
   let configStream;
 
   if (!configPath) {
-    info('cannot found config file, use default configurations');
-    const config = {
-      title: 'An Enjoyable Playground',
-      html: null,
-      css: null,
-      js: null
-    };
+    info('cannot find config file, use default configurations');
+    const config = DEFAULT_CONFIG;
     info(JSON.stringify(config, null, 4));
     configStream = Observable.just(config);
   } else {
@@ -87,10 +97,11 @@ export default wrap(function *({targetDir = process.cwd(), liveReload}, serveAss
     configStream.flatMap(processAssetFiles({targetDir}, serveAssets))
   )
     .debounce(100)
-    .subscribeOnNext(() => {
-      if (liveReload) {
-        bs.reload();
-      }
-    });
-
+    .subscribe(
+      () => {
+        if (liveReload) {
+          bs.reload();
+        }
+      },
+      error);
 });
