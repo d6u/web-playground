@@ -1,5 +1,3 @@
-'use strict';
-
 const Bluebird = require('bluebird');
 const R = require('ramda');
 const resolveModule = require('../util/ModuleUtil').resolveModule;

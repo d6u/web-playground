@@ -1,4 +1,4 @@
-/*eslint no-console:0 no-process:0*/
+/*eslint no-console:0 no-process-exit:0*/
 
 import chalk from 'chalk';
 

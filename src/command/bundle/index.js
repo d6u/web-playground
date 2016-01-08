@@ -1,26 +1,30 @@
-import {join} from 'path';
-import {wrap} from 'co';
-import {prop, path, pipe} from 'ramda';
-import {render} from 'ejs';
+import { join, relative } from 'path';
+import { wrap } from 'co';
+import { prop, path } from 'ramda';
+import { render } from 'ejs';
+import { green } from 'chalk';
 import {
-  getConfigPath,
-  readFileToStr,
-  writeStrToFile
+  readToStr,
+  writeStrTo,
+  readAsset
 } from '../../util/FileUtil';
 import {
-  loadConfig,
+  getConfigPath,
+  loadConfig
+} from '../../util/ConfigUtil';
+import {
   getJsFilePath,
   getCssFilePath,
   getHtmlFilePath
-} from '../../util/PlaygroundUtil';
+} from '../../util/AssetUtil';
 import { info } from '../../util/Log';
 
 const getCssBaseContent = wrap(function *(baseType) {
   switch (baseType) {
   case 'reset':
-    return yield readFileToStr(join(__dirname, '..', '..', 'static', 'reset.css'));
+    return yield readAsset('reset.css');
   case 'normalize':
-    return yield readFileToStr(require.resolve('normalize.css'));
+    return yield readAsset('normalize.css');
   default:
     return null;
   }
@@ -45,26 +49,31 @@ export default wrap(function *({targetDir = process.cwd()}) {
     config = yield loadConfig(configPath);
   }
 
-  const [jsFpath, cssFpath, htmlFpath] = yield [
+
+  const [jsPath, cssPath, htmlPath] = yield [
     getJsFilePath(targetDir, config),
     getCssFilePath(targetDir, config),
     getHtmlFilePath(targetDir, config)
   ];
 
+
   const [locals, tmpl] = yield [
     {
-      title: prop('title', config),
-      js: jsFpath && readFileToStr(jsFpath),
-      css: cssFpath && readFileToStr(cssFpath),
-      html: htmlFpath && readFileToStr(htmlFpath),
-      cssBaseContent: pipe(getCssBaseContent, path(['css', 'base']))(config),
-      stylesheets: path(['css', 'external'], config),
-      scripts: path(['js', 'external'], config),
+      title          : prop('title', config),
+      js             : jsPath   && readToStr(jsPath),
+      css            : cssPath  && readToStr(cssPath),
+      html           : htmlPath && readToStr(htmlPath),
+      cssBaseContent : getCssBaseContent(path(['css', 'base'], config)),
+      stylesheets    : path(['css', 'external'], config),
+      scripts        : path(['js', 'external'], config),
     },
-    readFileToStr(join(__dirname, '..', '..', '..', 'template', 'bundle.ejs'))
+    readAsset('bundle.ejs')
   ];
 
   const content = render(tmpl, locals);
+  const fpath = join(targetDir, 'index.html');
 
-  writeStrToFile(join(targetDir, 'index.html'), content);
+  writeStrTo(fpath, content);
+
+  info(`created ${green(relative(process.cwd(), fpath))}`);
 });

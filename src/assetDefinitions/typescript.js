@@ -1,5 +1,3 @@
-'use strict';
-
 const resolveModule = require('../util/ModuleUtil').resolveModule;
 const RenderError = require('../ServeAssets').RenderError;
 
