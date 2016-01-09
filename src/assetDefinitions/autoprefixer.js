@@ -1,14 +1,19 @@
-const Bluebird = require('bluebird');
-const R = require('ramda');
-const resolveModule = require('../util/ModuleUtil').resolveModule;
+import { wrap } from 'co';
+import { RenderError } from '../Error';
+import { resolveModule } from '../util/ModuleUtil';
 
-module.exports = function renderAutoprefixer(str) {
-  return Bluebird.join(
-    resolveModule('postcss'),
-    resolveModule('autoprefixer'),
-    function (postcss, autoprefixer) {
-      const prefixer = postcss([autoprefixer]);
-      return prefixer.process(str);
-    })
-    .then(R.prop('css'));
-};
+export default wrap(function *(str) {
+  try {
+    const [postcss, autoprefixer] = yield [
+      resolveModule('postcss'),
+      resolveModule('autoprefixer')
+    ];
+
+    const prefixer = postcss([autoprefixer]);
+    const { css } = prefixer.process(str);
+
+    return css;
+  } catch (err) {
+    return new RenderError(err.message);
+  }
+});

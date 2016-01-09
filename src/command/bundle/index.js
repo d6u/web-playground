@@ -1,34 +1,15 @@
 import { join, relative } from 'path';
 import { wrap } from 'co';
 import { prop, path } from 'ramda';
-import { render } from 'ejs';
 import { green } from 'chalk';
-import {
-  readToStr,
-  writeStrTo,
-  readAsset
-} from '../../util/FileUtil';
-import {
-  getConfigPath,
-  loadConfig
-} from '../../util/ConfigUtil';
-import {
-  getJsFilePath,
-  getCssFilePath,
-  getHtmlFilePath
-} from '../../util/AssetUtil';
+import { safeDump } from 'js-yaml';
+import { readToStr, writeStrTo } from '../../util/FileUtil';
+import { getConfigPath, loadConfig } from '../../util/ConfigUtil';
+import { getJsFilePath, getCssFilePath, getHtmlFilePath } from '../../util/AssetUtil';
 import { info } from '../../util/Log';
-
-const getCssBaseContent = wrap(function *(baseType) {
-  switch (baseType) {
-  case 'reset':
-    return yield readAsset('reset.css');
-  case 'normalize':
-    return yield readAsset('normalize.css');
-  default:
-    return null;
-  }
-});
+import { renderTmpl } from '../../util/TemplateUtil';
+import { DEFAULT_CONFIG } from '../../CONST';
+import { getCssBaseContent } from './helper';
 
 export default wrap(function *({targetDir = process.cwd()}) {
 
@@ -38,17 +19,12 @@ export default wrap(function *({targetDir = process.cwd()}) {
 
   if (!configPath) {
     info('cannot found config file, use default configurations');
-    config = {
-      title: 'An Enjoyable Playground',
-      html: null,
-      css: null,
-      js: null
-    };
-    info(JSON.stringify(config, null, 4));
+    config = DEFAULT_CONFIG;
+    info('--------------------------');
+    info(safeDump(config, {indent: 4}));
   } else {
     config = yield loadConfig(configPath);
   }
-
 
   const [jsPath, cssPath, htmlPath] = yield [
     getJsFilePath(targetDir, config),
@@ -56,24 +32,18 @@ export default wrap(function *({targetDir = process.cwd()}) {
     getHtmlFilePath(targetDir, config)
   ];
 
+  const content = yield renderTmpl('bundle.ejs', {
+    title: prop('title', config),
+    js: jsPath && readToStr(jsPath),
+    css: cssPath && readToStr(cssPath),
+    html: htmlPath && readToStr(htmlPath),
+    cssBaseContent: getCssBaseContent(path(['css', 'base'], config)),
+    stylesheets: path(['css', 'external'], config),
+    scripts: path(['js', 'external'], config),
+  });
 
-  const [locals, tmpl] = yield [
-    {
-      title          : prop('title', config),
-      js             : jsPath   && readToStr(jsPath),
-      css            : cssPath  && readToStr(cssPath),
-      html           : htmlPath && readToStr(htmlPath),
-      cssBaseContent : getCssBaseContent(path(['css', 'base'], config)),
-      stylesheets    : path(['css', 'external'], config),
-      scripts        : path(['js', 'external'], config),
-    },
-    readAsset('bundle.ejs')
-  ];
-
-  const content = render(tmpl, locals);
   const fpath = join(targetDir, 'index.html');
-
-  writeStrTo(fpath, content);
-
+  yield writeStrTo(fpath, content);
   info(`created ${green(relative(process.cwd(), fpath))}`);
+
 });
