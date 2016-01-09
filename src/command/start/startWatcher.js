@@ -1,6 +1,7 @@
 import { Observable } from 'rx';
 import { wrap } from 'co';
-import { curry, converge, prop, path, pipe } from 'ramda';
+import { curry, converge, prop, path, pipe, equals } from 'ramda';
+import { safeDump } from 'js-yaml';
 import { getConfigPath, loadConfig } from '../../util/ConfigUtil';
 import {
   getJsGlobPattern,
@@ -80,7 +81,14 @@ export default wrap(function *({targetDir, liveReload}, serveAssets, bs) {
     info(JSON.stringify(config, null, 4));
     configStream = Observable.just(config);
   } else {
-    configStream = watch(configPath).flatMap(loadConfig);
+    configStream = watch(configPath)
+      .flatMap(loadConfig)
+      .distinctUntilChanged(null, equals)
+      .doOnNext((config) => {
+        info('config updated');
+        info('--------------------------');
+        info(safeDump(config, {indent: 4}));
+      });
   }
 
   let onlyCssChange = false;
@@ -93,7 +101,7 @@ export default wrap(function *({targetDir, liveReload}, serveAssets, bs) {
       return js0 === js1 && css0 === css1 && html0 === html1;
     })
     .subscribe(
-      ([js, css, html]) => {
+      () => {
         if (liveReload) {
           if (onlyCssChange) {
             bs.reload('css.css');

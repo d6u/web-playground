@@ -1,6 +1,6 @@
 import assert from 'assert';
 import { curry, contains } from 'ramda';
-import route from 'koa-route'
+import route from 'koa-route';
 import { RenderError } from '../Error';
 import getCss from './getCss';
 import getCssNormalize from './getCssNormalize';
