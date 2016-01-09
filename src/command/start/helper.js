@@ -30,9 +30,9 @@ function processHtmlFile({targetDir}, serveAssets, config) {
   return watch(getHtmlGlobPattern(targetDir, config))
     .debounce(100)
     .flatMap(readToStr)
+    .retry()
     .flatMap(getHtmlRender(config))
     .startWith('<div id="playground"></div>')
-    .retry()
     .doOnNext(serveAssets.updateAsset('html'));
 }
 
@@ -40,9 +40,9 @@ function processJsFile({targetDir}, serveAssets, config) {
   return watch(getJsGlobPattern(targetDir, config))
     .debounce(100)
     .flatMap(readToStr)
+    .retry()
     .flatMap(getJsRender(config))
     .startWith("try {\n  document.getElementById('playground').innerHTML = 'hello, playground!';\n} catch (err) {}")
-    .retry()
     .doOnNext(serveAssets.updateAsset('js'));
 }
 
@@ -50,10 +50,10 @@ function processCssFile({targetDir}, serveAssets, config) {
   return watch(getCssGlobPattern(targetDir, config))
     .debounce(100)
     .flatMap(readToStr)
+    .retry()
     .flatMap(getCssRender(config))
     .flatMap(getPostProcessorForCss(config))
     .startWith('#playground {\n  color: rebeccapurple;\n}')
-    .retry()
     .doOnNext(serveAssets.updateAsset('css'));
 }
 
