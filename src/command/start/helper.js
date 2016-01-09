@@ -11,6 +11,7 @@ import {
   getHtmlRender,
   getPostProcessorForCss
 } from '../../util/AssetUtil';
+import { bundleDependencies } from '../../util/CommonJSUtil';
 
 const getLocalsFromPlayground = converge(
   (title, cssBase, stylesheets, scripts) => ({title, cssBase, stylesheets, scripts}),
@@ -42,6 +43,7 @@ function processJsFile({targetDir}, serveAssets, config) {
     .flatMap(readToStr)
     .retry()
     .flatMap(getJsRender(config))
+    .flatMap(bundleDependencies)
     .startWith("try {\n  document.getElementById('playground').innerHTML = 'hello, playground!';\n} catch (err) {}")
     .doOnNext(serveAssets.updateAsset('js'));
 }
