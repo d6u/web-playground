@@ -20,9 +20,9 @@ const getLocalsFromPlayground = converge(
   (title, cssBase, stylesheets, scripts) => ({title, cssBase, stylesheets, scripts}),
   [
     pipe(prop('title'), defaultTo(DEFAULT_CONFIG.title)),
-    path(['css', 'base']),
-    path(['css', 'external']),
-    path(['js', 'external']),
+    pipe(path(['css', 'base']), defaultTo(null)),
+    pipe(path(['css', 'external']), defaultTo(null)),
+    pipe(path(['js', 'external']), defaultTo(null))
   ]
 );
 
