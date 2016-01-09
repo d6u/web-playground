@@ -13,6 +13,7 @@ import {
 } from '../../util/AssetUtil';
 import { watch, readToStr } from '../../util/FileUtil';
 import { info, error } from '../../util/Log';
+import { DEFAULT_CONFIG } from '../../CONST';
 
 const getLocalsFromPlayground = converge(
   (title, cssBase, stylesheets, scripts) => ({title, cssBase, stylesheets, scripts}),
@@ -25,10 +26,7 @@ const getLocalsFromPlayground = converge(
 );
 
 const setLocals = curry(function (serveAssets, config) {
-  pipe(
-    getLocalsFromPlayground,
-    serveAssets.setLocals
-  )(config);
+  pipe(getLocalsFromPlayground, serveAssets.setLocals)(config);
 });
 
 function processHtmlFile({targetDir}, serveAssets, config) {
@@ -54,19 +52,12 @@ function processCssFile({targetDir}, serveAssets, config) {
 }
 
 const processAssetFiles = curry(function (opts, serveAssets, config) {
-  return Observable.merge(
-    processHtmlFile(opts, serveAssets, config),
+  return Observable.combineLatest(
     processJsFile(opts, serveAssets, config),
-    processCssFile(opts, serveAssets, config)
+    processCssFile(opts, serveAssets, config),
+    processHtmlFile(opts, serveAssets, config)
   );
 });
-
-const DEFAULT_CONFIG = {
-  title: 'Cat Playground',
-  html: null,
-  css: null,
-  js: null
-};
 
 /**
  * @param {Object}      opts
@@ -92,15 +83,23 @@ export default wrap(function *({targetDir, liveReload}, serveAssets, bs) {
     configStream = watch(configPath).flatMap(loadConfig);
   }
 
-  Observable.merge(
-    configStream.doOnNext(setLocals(serveAssets)),
-    configStream.flatMap(processAssetFiles({targetDir}, serveAssets))
-  )
-    .debounce(100)
+  let onlyCssChange = false;
+
+  configStream
+    .doOnNext(setLocals(serveAssets))
+    .flatMap(processAssetFiles({ targetDir }, serveAssets))
+    .distinctUntilChanged(null, ([js0, css0, html0], [js1, css1, html1]) => {
+      onlyCssChange = (css0 !== css1) && (js0 === js1 && html0 === html1);
+      return js0 === js1 && css0 === css1 && html0 === html1;
+    })
     .subscribe(
-      () => {
+      ([js, css, html]) => {
         if (liveReload) {
-          bs.reload();
+          if (onlyCssChange) {
+            bs.reload('css.css');
+          } else {
+            bs.reload();
+          }
         }
       },
       error);

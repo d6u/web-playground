@@ -1,5 +1,6 @@
 import assert from 'assert';
 import { curry, contains } from 'ramda';
+import route from 'koa-route'
 import { RenderError } from '../Error';
 import getCss from './getCss';
 import getCssNormalize from './getCssNormalize';
@@ -42,30 +43,12 @@ export default class ServeAssets {
       }
     });
 
-    this.router = () => {
-      const self = this;
-
-      return function *(next) {
-        switch (this.url) {
-        case '/':
-          yield getRoot.call(this, next, self);
-          break;
-        case '/js.js':
-          yield getJs.call(this, next, self);
-          break;
-        case '/css.css':
-          yield getCss.call(this, next, self);
-          break;
-        case '/reset.css':
-          yield getCssReset.call(this, next, self);
-          break;
-        case '/normalize.css':
-          yield getCssNormalize.call(this, next, self);
-          break;
-        default:
-          this.status = 404;
-        }
-      };
+    this.configRouter = (app) => {
+      app.use(route.get('/', getRoot(this)));
+      app.use(route.get('/js.js', getJs(this)));
+      app.use(route.get('/css.css', getCss(this)));
+      app.use(route.get('/reset.css', getCssReset(this)));
+      app.use(route.get('/normalize.css', getCssNormalize(this)));
     };
   }
 }
