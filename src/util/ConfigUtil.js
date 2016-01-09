@@ -26,6 +26,11 @@ export function getDefaultConfigPath(dir) {
 
 export const loadConfig = wrap(function *(fpath) {
   const fcontent = yield readToStr(fpath);
+
+  if (!fcontent) {
+    throw new Error(`${fpath} is not a valid config file`);
+  }
+
   const ftype = extname(fpath).slice(1);
 
   switch (ftype) {
@@ -38,3 +43,8 @@ export const loadConfig = wrap(function *(fpath) {
     // should not reach
   }
 });
+
+export function getConfigGlobPattern(dir) {
+  const exts = CONFIG_FILES.join(',');
+  return join(dir, `{${exts}}`);
+}

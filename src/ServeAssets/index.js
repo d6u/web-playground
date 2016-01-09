@@ -11,12 +11,12 @@ import getRoot from './getRoot';
 export default class ServeAssets {
   constructor() {
     this.assets = {
-      html: null,
       js: null,
       css: null,
-      htmlErr: null,
+      html: null,
       jsErr: null,
       cssErr: null,
+      htmlErr: null,
     };
 
     this.locals = {};

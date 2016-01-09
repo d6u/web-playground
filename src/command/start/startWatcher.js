@@ -1,8 +1,8 @@
 import { Observable } from 'rx';
 import { wrap } from 'co';
-import { curry, converge, prop, path, pipe, equals } from 'ramda';
+import { curry, converge, prop, path, pipe, equals, defaultTo } from 'ramda';
 import { safeDump } from 'js-yaml';
-import { getConfigPath, loadConfig } from '../../util/ConfigUtil';
+import { getConfigPath, getConfigGlobPattern, loadConfig } from '../../util/ConfigUtil';
 import {
   getJsGlobPattern,
   getCssGlobPattern,
@@ -19,7 +19,7 @@ import { DEFAULT_CONFIG } from '../../CONST';
 const getLocalsFromPlayground = converge(
   (title, cssBase, stylesheets, scripts) => ({title, cssBase, stylesheets, scripts}),
   [
-    prop('title'),
+    pipe(prop('title'), defaultTo(DEFAULT_CONFIG.title)),
     path(['css', 'base']),
     path(['css', 'external']),
     path(['js', 'external']),
@@ -32,23 +32,32 @@ const setLocals = curry(function (serveAssets, config) {
 
 function processHtmlFile({targetDir}, serveAssets, config) {
   return watch(getHtmlGlobPattern(targetDir, config))
+    .debounce(100)
     .flatMap(readToStr)
     .flatMap(getHtmlRender(config))
+    .startWith('<div id="playground"></div>')
+    .retry()
     .doOnNext(serveAssets.updateAsset('html'));
 }
 
 function processJsFile({targetDir}, serveAssets, config) {
   return watch(getJsGlobPattern(targetDir, config))
+    .debounce(100)
     .flatMap(readToStr)
     .flatMap(getJsRender(config))
+    .startWith("try {\n  document.getElementById('playground').innerHTML = 'hello, playground!';\n} catch (err) {}")
+    .retry()
     .doOnNext(serveAssets.updateAsset('js'));
 }
 
 function processCssFile({targetDir}, serveAssets, config) {
   return watch(getCssGlobPattern(targetDir, config))
+    .debounce(100)
     .flatMap(readToStr)
     .flatMap(getCssRender(config))
     .flatMap(getPostProcessorForCss(config))
+    .startWith('#playground {\n  color: rebeccapurple;\n}')
+    .retry()
     .doOnNext(serveAssets.updateAsset('css'));
 }
 
@@ -71,25 +80,23 @@ const processAssetFiles = curry(function (opts, serveAssets, config) {
  */
 export default wrap(function *({targetDir, liveReload}, serveAssets, bs) {
 
+  const configGlobPattern = getConfigGlobPattern(targetDir);
+
+  let configStream = watch(configGlobPattern).flatMap(loadConfig);
+
   const configPath = yield getConfigPath(targetDir);
-
-  let configStream;
-
   if (!configPath) {
     info('cannot find config file, use default configurations');
-    const config = DEFAULT_CONFIG;
-    info(JSON.stringify(config, null, 4));
-    configStream = Observable.just(config);
-  } else {
-    configStream = watch(configPath)
-      .flatMap(loadConfig)
-      .distinctUntilChanged(null, equals)
-      .doOnNext((config) => {
-        info('config updated');
-        info('--------------------------');
-        info(safeDump(config, {indent: 4}));
-      });
+    configStream = configStream.startWith(DEFAULT_CONFIG);
   }
+
+  configStream = configStream
+    .distinctUntilChanged(null, equals)
+    .doOnNext((config) => {
+      info('config updated');
+      info('--------------------------');
+      info(safeDump(config, {indent: 4}));
+    });
 
   let onlyCssChange = false;
 

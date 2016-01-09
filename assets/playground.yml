@@ -1,4 +1,4 @@
-title: An Enjoyable Playground
+title: Cat Playground
 
 #### Uncomment property to enable the feature you want
 
@@ -9,7 +9,7 @@ html:
 
 js:
   #### Available - babel, coffeescript, typescript
-  # preprocessor: babel
+  preprocessor: babel
 
   #### These scripts will be added in appearance order and before the your js
   # external:
@@ -17,7 +17,7 @@ js:
 
 css:
   #### Available - scss, less, stylus
-  # preprocessor: scss
+  preprocessor: scss
 
   #### Available - autoprefixer
   # vender_prefixing: autoprefixer
