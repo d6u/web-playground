@@ -1,6 +1,6 @@
 import { Observable } from 'rx';
 import { curry, converge, prop, path, pipe, defaultTo } from 'ramda';
-import { watch } from '../../util/FileUtil';
+import { watch, readToStr } from '../../util/FileUtil';
 import { DEFAULT_CONFIG } from '../../CONST';
 import {
   getJsGlobPattern,
@@ -11,7 +11,6 @@ import {
   getHtmlRender,
   getPostProcessorForCss
 } from '../../util/AssetUtil';
-import { readToStr } from '../../util/FileUtil';
 
 const getLocalsFromPlayground = converge(
   (title, cssBase, stylesheets, scripts) => ({title, cssBase, stylesheets, scripts}),
