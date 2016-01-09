@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { R_OK } from 'fs';
+import { R_OK, readFileSync } from 'fs';
 import { wrap } from 'co';
 import { access, readFile, writeFile } from 'mz/fs';
 import chokidar from 'chokidar';
@@ -39,3 +39,7 @@ export const readAsset = wrap(function *(name) {
     return null;
   }
 });
+
+export function readAssetSync(name) {
+  return readFileSync(getAssetPath(name), 'utf8');
+}

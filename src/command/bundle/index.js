@@ -18,17 +18,7 @@ import {
   getHtmlFilePath
 } from '../../util/AssetUtil';
 import { info } from '../../util/Log';
-
-const getCssBaseContent = wrap(function *(baseType) {
-  switch (baseType) {
-  case 'reset':
-    return yield readAsset('reset.css');
-  case 'normalize':
-    return yield readAsset('normalize.css');
-  default:
-    return null;
-  }
-});
+import { getCssBaseContent } from './helper';
 
 export default wrap(function *({targetDir = process.cwd()}) {
 

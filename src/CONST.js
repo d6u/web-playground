@@ -1,11 +1,4 @@
-import { join } from 'path';
-import { readFileSync } from 'fs';
 import { safeLoad } from 'js-yaml';
+import { readAssetSync } from './util/FileUtil';
 
-export const DEFAULT_CONFIG =
-  safeLoad(
-    readFileSync(
-      join(__dirname, '..', 'assets', 'playground.yml'),
-      'utf8'
-    )
-  );
+export const DEFAULT_CONFIG = safeLoad(readAssetSync('playground.yml'));
