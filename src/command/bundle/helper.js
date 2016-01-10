@@ -31,10 +31,10 @@ const renderJS = curryN(3, wrap(function *(targetDir, config, fpath) {
   const str = yield readToStr(fpath);
 
   if (hasAnyRequire(str)) {
-    return yield renderSingleJS(config)(fpath);
+    return yield createBundle(dirname(fpath));
   }
 
-  return yield createBundle(dirname(fpath));
+  return yield renderSingleJS(config)(fpath);
 }));
 
 export const getLocals = wrap(function *({ targetDir }, config) {

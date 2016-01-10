@@ -26,7 +26,7 @@ export function createBundle(targetDir) {
 
     compiler.outputFileSystem = fs;
 
-    compiler.run({}, (err, stats) => {
+    compiler.run((err, stats) => {
       if (err) {
         done(err);
         return;
