@@ -1,12 +1,12 @@
-const resolveModule = require('../util/ModuleUtil').resolveModule;
+import { wrap } from 'co';
 import { RenderError } from '../Error';
+import { resolveModule } from '../util/ModuleUtil';
 
-module.exports = function renderTypeScript(str) {
-  return resolveModule('typescript')
-    .then(function (typescript) {
-      return typescript.transpile(str);
-    })
-    .catch(function (err) {
-      return new RenderError(err.message);
-    });
-};
+export default wrap(function *(str) {
+  try {
+    const typescript = yield resolveModule('typescript');
+    return typescript.transpile(str);
+  } catch (err) {
+    return new RenderError(err.message);
+  }
+});

@@ -1,12 +1,12 @@
-const resolveModule = require('../util/ModuleUtil').resolveModule;
+import { wrap } from 'co';
 import { RenderError } from '../Error';
+import { resolveModule } from '../util/ModuleUtil';
 
-module.exports = function renderCoffee(str) {
-  return resolveModule('coffee-script')
-    .then(function (coffee) {
-      return coffee.compile(str);
-    })
-    .catch(function (err) {
-      return new RenderError(err.message);
-    });
-};
+export default wrap(function *(str) {
+  try {
+    const coffee = yield resolveModule('coffee-script');
+    return coffee.compile(str);
+  } catch (err) {
+    return new RenderError(err.message);
+  }
+});

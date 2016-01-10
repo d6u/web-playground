@@ -1,17 +1,14 @@
-const Bluebird = require('bluebird');
-const R = require('ramda');
-const resolveModule = require('../util/ModuleUtil').resolveModule;
+import { wrap } from 'co';
+import { fromCallback } from 'bluebird';
 import { RenderError } from '../Error';
+import { resolveModule } from '../util/ModuleUtil';
 
-module.exports = function renderScss(str) {
-  return resolveModule('node-sass')
-    .then(function (sass) {
-      return Bluebird.fromNode(function (cb) {
-        sass.render({data: str, outputStyle: 'expanded'}, cb);
-      });
-    })
-    .then(R.prop('css'))
-    .catch(function (err) {
-      return new RenderError(err.message);
-    });
-};
+export default wrap(function *(str) {
+  try {
+    const sass = yield resolveModule('node-sass');
+    const { css } = yield fromCallback((done) => sass.render({data: str, outputStyle: 'expanded'}, done));
+    return css;
+  } catch (err) {
+    return new RenderError(err.message);
+  }
+});
