@@ -5,6 +5,13 @@ import { Observable } from 'rx';
 import { fromCallback } from 'bluebird';
 import { RenderError } from '../Error';
 
+/**
+ * Bundle JS file with CommonJS module, return the bundled JS file as string
+ *
+ * @param {string} targetDir - The directory contains `js.js` file
+ *
+ * @return {Promise<string>} Bundled js file content
+ */
 export function createBundle(targetDir) {
   return fromCallback((done) => {
     const fs = new MemoryFS();
@@ -31,6 +38,13 @@ export function createBundle(targetDir) {
   });
 }
 
+/**
+ * Create a stream that emits JS file on file changes
+ *
+ * @param {string} targetDir - The directory contains `js.js` file
+ *
+ * @return {Observable<string>} Emit bundled JS file content
+ */
 export function createBundlerStream(targetDir) {
   return Observable.create((observer) => {
     const fs = new MemoryFS();

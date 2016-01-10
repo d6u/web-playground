@@ -39,12 +39,12 @@ function processJsFile({ targetDir }, serveAssets, config) {
     .flatMap(readToStr)
     .map(hasAnyRequire)
     .distinctUntilChanged()
-    .flatMap((isRequirePresent) => {
+    .flatMapLatest((isRequirePresent) => {
       if (isRequirePresent) {
         return createBundlerStream(targetDir);
       }
 
-      return watch(getJsGlobPattern(targetDir))
+      return watch(getJsGlobPattern(targetDir, config))
         .debounce(100)
         .flatMap(renderSingleJS(config));
     })
