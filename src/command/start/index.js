@@ -11,13 +11,6 @@ export default wrap(function *({ openBrowser, targetDir, liveReload }) {
   const port = yield getAvailablePort();
 
   const bs = createBrowserSync();
-  const bsOpts = {
-    proxy: `http://localhost:${port}`,
-    ui: false,
-    notify: false,
-    ghostMode: false,
-    open: openBrowser,
-  };
 
   const serveAssets = new ServeAssets();
   const app = koa();
@@ -34,7 +27,13 @@ export default wrap(function *({ openBrowser, targetDir, liveReload }) {
 
   yield startWatcher({ targetDir, liveReload }, serveAssets, bs);
 
-  bs.init(bsOpts);
+  bs.init({
+    proxy: `http://localhost:${port}`,
+    ui: false,
+    notify: false,
+    ghostMode: false,
+    open: openBrowser,
+  });
   app.listen(port);
 
 });

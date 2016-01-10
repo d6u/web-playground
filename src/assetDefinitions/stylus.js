@@ -1,15 +1,13 @@
-const Bluebird = require('bluebird');
-const resolveModule = require('../util/ModuleUtil').resolveModule;
+import { wrap } from 'co';
+import { fromCallback } from 'bluebird';
 import { RenderError } from '../Error';
+import { resolveModule } from '../util/ModuleUtil';
 
-module.exports = function renderStylus(str) {
-  return resolveModule('stylus')
-    .then(function (stylus) {
-      return Bluebird.fromNode(function (cb) {
-        stylus.render(str, cb);
-      });
-    })
-    .catch(function (err) {
-      return new RenderError(err.message);
-    });
-};
+export default wrap(function *(str) {
+  try {
+    const stylus = yield resolveModule('stylus');
+    return yield fromCallback((done) => stylus.render(str, done));
+  } catch (err) {
+    return new RenderError(err.message);
+  }
+});

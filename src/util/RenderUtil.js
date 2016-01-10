@@ -1,5 +1,4 @@
 import { wrap } from 'co';
-import { bundleDependencies } from './CommonJSUtil';
 import {
   getJsRender,
   getCssRender,
@@ -8,13 +7,18 @@ import {
 } from './AssetUtil';
 import { readToStr } from './FileUtil';
 
-export function renderJS(config) {
+/**
+ * @param {Object} config -
+ * @param {string} fpath -
+ *
+ * @return {Promise<string>} JS code
+ */
+export function renderSingleJS(config) {
   const render = getJsRender(config);
 
   return wrap(function *(fpath) {
     const fcontent = yield readToStr(fpath);
-    const js = yield render(fcontent);
-    return yield bundleDependencies(js);
+    return yield render(fcontent);
   });
 }
 

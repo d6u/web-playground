@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
+import { resolve } from 'path';
 import program from 'commander';
-import {pick, merge} from 'ramda';
+import { pick, merge } from 'ramda';
 import pkg from '../../package.json';
 import init from '../command/init';
 import start from '../command/start';
@@ -12,7 +13,7 @@ const pickOpts = pick(['targetDir', 'openBrowser', 'liveReload']);
 
 program
   .version(pkg.version)
-  .option('-d, --target-dir <dir-name>', 'target different directory', process.cwd());
+  .option('-d, --target-dir <dir-name>', 'target different directory', (dir) => resolve(dir), process.cwd());
 
 program
   .command('init')

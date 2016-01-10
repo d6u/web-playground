@@ -1,12 +1,12 @@
-const resolveModule = require('../util/ModuleUtil').resolveModule;
+import { wrap } from 'co';
 import { RenderError } from '../Error';
+import { resolveModule } from '../util/ModuleUtil';
 
-module.exports = function renderJade(str) {
-  return resolveModule('jade')
-    .then(function (jade) {
-      return jade.render(str, {pretty: true});
-    })
-    .catch(function (err) {
-      return new RenderError(err.message);
-    });
-};
+export default wrap(function *(str) {
+  try {
+    const jade = yield resolveModule('jade');
+    return jade.render(str, {pretty: true});
+  } catch (err) {
+    return new RenderError(err.message);
+  }
+});

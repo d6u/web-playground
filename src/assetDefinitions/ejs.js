@@ -1,12 +1,12 @@
-const resolveModule = require('../util/ModuleUtil').resolveModule;
+import { wrap } from 'co';
 import { RenderError } from '../Error';
+import { resolveModule } from '../util/ModuleUtil';
 
-module.exports = function renderEjs(str) {
-  return resolveModule('ejs')
-    .then(function (ejs) {
-      return ejs.render(str);
-    })
-    .catch(function (err) {
-      return new RenderError(err.message);
-    });
-};
+export default wrap(function *(str) {
+  try {
+    const ejs = yield resolveModule('ejs');
+    return ejs.render(str);
+  } catch (err) {
+    return new RenderError(err.message);
+  }
+});

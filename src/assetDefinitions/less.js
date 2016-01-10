@@ -1,17 +1,14 @@
-const Bluebird = require('bluebird');
-const R = require('ramda');
-const resolveModule = require('../util/ModuleUtil').resolveModule;
+import { wrap } from 'co';
+import { fromCallback } from 'bluebird';
 import { RenderError } from '../Error';
+import { resolveModule } from '../util/ModuleUtil';
 
-module.exports = function renderLess(str) {
-  return resolveModule('less')
-    .then(function (less) {
-      return Bluebird.fromNode(function (cb) {
-        less.render(str, cb);
-      });
-    })
-    .then(R.prop('css'))
-    .catch(function (err) {
-      return new RenderError(err.message);
-    });
-};
+export default wrap(function *(str) {
+  try {
+    const less = yield resolveModule('less');
+    const { css } = yield fromCallback((done) => less.render(str, done));
+    return css;
+  } catch (err) {
+    return new RenderError(err.message);
+  }
+});
