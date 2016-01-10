@@ -1,17 +1,13 @@
 import { Observable } from 'rx';
 import { curry, converge, prop, path, pipe, defaultTo } from 'ramda';
-import { watch, readToStr } from '../../util/FileUtil';
+import { watch } from '../../util/FileUtil';
 import { DEFAULT_CONFIG } from '../../CONST';
 import {
   getJsGlobPattern,
   getCssGlobPattern,
-  getHtmlGlobPattern,
-  getJsRender,
-  getCssRender,
-  getHtmlRender,
-  getPostProcessorForCss
+  getHtmlGlobPattern
 } from '../../util/AssetUtil';
-import { bundleDependencies } from '../../util/CommonJSUtil';
+import { renderJS, renderCSS, renderHTML } from '../../util/RenderUtil';
 
 const getLocalsFromPlayground = converge(
   (title, cssBase, stylesheets, scripts) => ({title, cssBase, stylesheets, scripts}),
@@ -27,23 +23,11 @@ export const setLocals = curry(function (serveAssets, config) {
   pipe(getLocalsFromPlayground, serveAssets.setLocals)(config);
 });
 
-function processHtmlFile({targetDir}, serveAssets, config) {
-  return watch(getHtmlGlobPattern(targetDir, config))
-    .debounce(100)
-    .flatMap(readToStr)
-    .retry()
-    .flatMap(getHtmlRender(config))
-    .startWith('<div id="playground"></div>')
-    .doOnNext(serveAssets.updateAsset('html'));
-}
-
 function processJsFile({targetDir}, serveAssets, config) {
   return watch(getJsGlobPattern(targetDir, config))
     .debounce(100)
-    .flatMap(readToStr)
+    .flatMap(renderJS(config))
     .retry()
-    .flatMap(getJsRender(config))
-    .flatMap(bundleDependencies)
     .startWith("try {\n  document.getElementById('playground').innerHTML = 'hello, playground!';\n} catch (err) {}")
     .doOnNext(serveAssets.updateAsset('js'));
 }
@@ -51,12 +35,19 @@ function processJsFile({targetDir}, serveAssets, config) {
 function processCssFile({targetDir}, serveAssets, config) {
   return watch(getCssGlobPattern(targetDir, config))
     .debounce(100)
-    .flatMap(readToStr)
+    .flatMap(renderCSS(config))
     .retry()
-    .flatMap(getCssRender(config))
-    .flatMap(getPostProcessorForCss(config))
     .startWith('#playground {\n  color: rebeccapurple;\n}')
     .doOnNext(serveAssets.updateAsset('css'));
+}
+
+function processHtmlFile({targetDir}, serveAssets, config) {
+  return watch(getHtmlGlobPattern(targetDir, config))
+    .debounce(100)
+    .flatMap(renderHTML(config))
+    .retry()
+    .startWith('<div id="playground"></div>')
+    .doOnNext(serveAssets.updateAsset('html'));
 }
 
 export const processAssetFiles = curry(function (opts, serveAssets, config) {
