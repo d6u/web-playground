@@ -1,39 +1,60 @@
-import { Readable } from 'stream';
-import { wrap } from 'co';
-import hasRequire from 'has-require';
-import browserify from 'browserify';
+import { join } from 'path';
+import webpack from 'webpack';
+import MemoryFS from 'memory-fs';
+import { Observable } from 'rx';
 import { fromCallback } from 'bluebird';
 import { RenderError } from '../Error';
 
-function createReadableStream(str) {
-  const r = new Readable({objectMode: true});
-  r._read = function () {
-    r.push(str);
-    r.push(null);
-  };
-  return r;
-}
+export function createBundle(targetDir) {
+  return fromCallback((done) => {
+    const fs = new MemoryFS();
 
-const bundle = wrap(function *(str) {
-  const buf = yield new fromCallback((done) => {
-    const b = browserify({
-      entries: createReadableStream(str),
-      basedir: process.cwd()
+    const compiler = webpack({
+      entry: [join(targetDir, 'js.js')],
+      output: {
+        path: targetDir,
+        filename: 'bundle.js',
+      }
     });
 
-    b.bundle(done);
+    compiler.outputFileSystem = fs;
+
+    compiler.run({}, (err, stats) => {
+      if (err) {
+        done(err);
+        return;
+      }
+
+      const fcontent = fs.readFileSync(join(targetDir, 'bundle.js'), 'utf8');
+      done(null, fcontent);
+    });
   });
+}
 
-  return buf.toString('utf8');
-});
+export function createBundlerStream(targetDir) {
+  return Observable.create((observer) => {
+    const fs = new MemoryFS();
 
-export const bundleDependencies = wrap(function *(str) {
-  if (hasRequire.any(str)) {
-    try {
-      return yield bundle(str);
-    } catch (err) {
-      return new RenderError(err.message);
-    }
-  }
-  return str;
-});
+    const compiler = webpack({
+      entry: [join(targetDir, 'js.js')],
+      output: {
+        path: targetDir,
+        filename: 'bundle.js',
+      }
+    });
+
+    compiler.outputFileSystem = fs;
+
+    const watcher = compiler.watch({}, (err, stats) => {
+      if (err) {
+        observer.onNext(new RenderError(err.message));
+        return;
+      }
+
+      const fontent = fs.readFileSync(join(targetDir, 'bundle.js'), 'utf8');
+      observer.onNext(fontent);
+    });
+
+    return () => watcher.close();
+  });
+}

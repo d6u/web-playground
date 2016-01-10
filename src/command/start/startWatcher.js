@@ -16,7 +16,7 @@ import { setLocals, processAssetFiles } from './helper';
  *
  * @return {void}
  */
-export default wrap(function *({targetDir, liveReload}, serveAssets, bs) {
+export default wrap(function *({ targetDir, liveReload }, serveAssets, bs) {
 
   const configGlobPattern = getConfigGlobPattern(targetDir);
 
