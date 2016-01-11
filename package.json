@@ -27,9 +27,7 @@
   },
   "files": [
     "lib",
-    "src",
-    "assets",
-    ".babelrc"
+    "assets"
   ],
   "dependencies": {
     "autoprefixer": "^6.2.3",
@@ -72,9 +70,9 @@
     "check": "npm run lint",
     "coverage": "npm run check && cat ./coverage/coverage-final.json | ./node_modules/codecov.io/bin/codecov.io.js",
     "clean": "rimraf lib",
-    "build:lib": "babel src --out-dir lib",
-    "build": "npm run clean && npm run build:lib",
+    "build": "npm run clean && babel src --out-dir lib",
     "watch": "babel src --out-dir lib --watch",
+    "prepublish": "npm run clean && npm run build",
     "preversion": "npm run check",
     "postversion": "git push && git push --tags"
   }

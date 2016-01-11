@@ -16,4 +16,4 @@ branches:
     - master
 before_install:
   - 'npm config set spin false'
-script: 'npm run coverage'
+script: 'npm run check'
