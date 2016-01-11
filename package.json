@@ -72,7 +72,7 @@
     "lint": "eslint src",
     "test": "mocha --require babel-core/register",
     "coverage": "babel-node node_modules/isparta/bin/isparta cover node_modules/mocha/bin/_mocha",
-    "upload-coverage": "cat ./coverage/coverage-final.json | ./node_modules/codecov.io/bin/codecov.io.js",
+    "upload-coverage": "cat ./coverage/coverage.json | ./node_modules/codecov.io/bin/codecov.io.js",
     "check": "npm run lint && npm run coverage && npm run upload-coverage",
     "clean": "rimraf lib",
     "build": "npm run clean && babel src --out-dir lib",
