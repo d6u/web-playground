@@ -33,7 +33,7 @@ js:
   preprocessor: babel
 ```
 
-### Supported Preprocessors
+### Supported preprocessors
 
 Web Playground supports a variety of preprocessors. But only a few are builtin (babel, node-scss, and ejs). This is to speed up installation and improve start up performance.
 
