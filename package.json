@@ -78,7 +78,7 @@
     "build": "npm run clean && babel src --out-dir lib",
     "watch": "babel src --out-dir lib --watch",
     "prepublish": "npm run clean && npm run build",
-    "preversion": "npm run check",
+    "preversion": "npm run lint && npm run coverage",
     "postversion": "git push && git push --tags"
   }
 }
