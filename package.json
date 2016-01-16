@@ -55,6 +55,7 @@
     "ramda": "~0.19.0",
     "resolve": "^1.1.6",
     "rx": "^4.0.7",
+    "source-map-support": "^0.4.0",
     "webpack": "^1.12.10"
   },
   "devDependencies": {
@@ -75,8 +76,8 @@
     "upload-coverage": "cat ./coverage/coverage.json | ./node_modules/codecov.io/bin/codecov.io.js",
     "check": "npm run lint && npm run coverage && npm run upload-coverage",
     "clean": "rimraf lib",
-    "build": "npm run clean && babel src --out-dir lib",
-    "watch": "babel src --out-dir lib --watch",
+    "build": "npm run clean && babel src --out-dir lib -s true",
+    "watch": "babel src --out-dir lib --watch -s true",
     "prepublish": "npm run clean && npm run build",
     "preversion": "npm run lint && npm run coverage",
     "postversion": "git push && git push --tags"

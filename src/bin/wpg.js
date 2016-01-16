@@ -2,12 +2,15 @@
 
 import { resolve } from 'path';
 import program from 'commander';
+import { install } from 'source-map-support';
 import { pick, merge } from 'ramda';
 import pkg from '../../package.json';
 import init from '../command/init';
 import start from '../command/start';
 import {error} from '../util/Log';
 import bundle from '../command/bundle';
+
+install();
 
 const pickOpts = pick(['targetDir', 'openBrowser', 'liveReload']);
 
